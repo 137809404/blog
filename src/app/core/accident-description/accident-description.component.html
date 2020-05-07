@@ -1,0 +1,94 @@
+<div>
+  <div class="header">
+    <h1>案情描述</h1>
+    <div>
+      <button nz-button nzSize="large" nzType="primary" (click)="showModal()"><i nz-icon nzType="plus"
+          nzTheme="outline"></i>添加描述</button>
+      <nz-modal nzWidth="700" [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent"
+        [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+        <ng-template #modalTitle>
+          <h1>填写以下问题帮助您更好地推荐</h1>
+        </ng-template>
+
+        <ng-template #modalContent>
+          <div style="display: flex;justify-content: flex-start;">
+            <nz-steps [nzCurrent]="index" nzDirection="vertical">
+              <nz-step nzTitle="事情经过"></nz-step>
+              <nz-step nzTitle="发生时间"></nz-step>
+              <nz-step nzTitle="发生地点"></nz-step>
+              <nz-step nzTitle="案件细节"></nz-step>
+              <nz-step nzTitle="案件参与者"></nz-step>
+            </nz-steps>
+            <div style="margin-left: 30px;display: flex;justify-content: center;align-items: center;width: 75%;">
+              <div *ngIf="index==0">请您描述一下事情经过<br />
+                <textarea nz-input [(ngModel)]="ans1"></textarea>
+              </div>
+              <div *ngIf="index==1">请您描述描述一下案情的发生时间<br />
+                <textarea nz-input [(ngModel)]="ans2"></textarea>
+              </div>
+              <div *ngIf="index==2">请您描述一下案情的发生地点<br />
+                <textarea nz-input [(ngModel)]="ans3"></textarea>
+              </div>
+              <div *ngIf="index==3">请您描述一下案件参与者<br />
+                <textarea nz-input [(ngModel)]="ans4"></textarea>
+              </div>
+              <div *ngIf="index==4">请您再补充一些案件细节<br />
+                <textarea nz-input [(ngModel)]="ans5"></textarea>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template #modalFooter>
+          <div style="display: flex;align-items: center;justify-content: center;padding: 0px;margin: 0px;">
+            <button nz-button nzType="default" nzShape="round" *ngIf="index!=0" (click)="prev()">
+              {{'上一步'}}</button>
+            <button nz-button nzType="primary" nzShape="round" (click)="next()"
+              [nzLoading]="isConfirmLoading">{{index==5?'完成':'下一步'}}</button>
+          </div>
+        </ng-template>
+      </nz-modal>
+    </div>
+  </div>
+  <nz-divider></nz-divider>
+  <nz-alert nzType="info" nzMessage="默认状态下，按用户注册时的偏好进行推荐" nzShowIcon nzCloseable></nz-alert>
+  <div class="table-title"><span>推荐律师</span></div>
+  <div class="lawyer-table">
+    <nz-table #filterTable [nzLoading]="tableLoading" [nzData]="listOfDisplayData">
+      <thead (nzSortChange)="sort($event)" nzSingleSort>
+        <tr>
+          <th nzShowSort nzSortKey="name">
+            姓名
+          </th>
+          <th nzShowSort nzSortKey="gender">性别</th>
+          <th nzShowSort nzSortKey="province">
+            省份
+          </th>
+          <th nzShowSort nzSortKey="city">
+            城市
+          </th>
+          <th nzShowSort nzSortKey="company">
+            公司
+          </th>
+          <th nzShowSort nzSortKey="profession">
+            专长
+          </th>
+          <th nzShowSort nzSortKey="score">
+            得分
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of filterTable.data">
+          <td>{{ data.name }}</td>
+          <td>{{ data.gender }}</td>
+          <td>{{ data.province }}</td>
+          <td>{{ data.city }}</td>
+          <td>{{ data.company }}</td>
+          <td>{{ data.profession }}</td>
+          <td>{{ data.score }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
